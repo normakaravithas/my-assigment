@@ -1,1 +1,2 @@
 hello this is the time
+/usr/bin/time -p date 2> time.txt
