@@ -1,0 +1,62 @@
+testing files
+How to Create an IAM Role with Administrator Access (and Add Specific Users)
+Follow these steps to set up an IAM role in AWS with full admin permissions, while allowing only specific users to assume it.
+## 1. Log into AWS
+Go to the [AWS Management Console](https://console.aws.amazon.com/) and sign in using an account with IAM privileges.
+---
+## 2. Open the IAM Dashboard
+In the search bar at the top, type **IAM** and select it to open the Identity and Access Management dashboard.
+---
+## 3. Create a New Role
+1. Click **Roles** in the left sidebar.
+2. Hit **Create role**.
+3. For **Trusted entity type**, choose **AWS account**.
+4. Select **This account** if you’re keeping it within your own AWS account or selcet **Another AWS account**
+---
+## 4. Attach Permissions
+1. On the permissions page, search for **AdministratorAccess**.
+2. Select it — this policy gives full access to all AWS services and resources.
+3. Click **Next**.
+---
+## 5. Name Your Role
+Give your role a clear name, such as `AdminAccessRole` or `FullAdminRole`.
+Optionally, add a short description like “Full admin access for selected users.”
+Click **Create role** when you’re ready.
+---
+## 6. Add Specific Users in the Trust Policy
+If you want to limit which users can assume this role, edit its trust policy:
+1. Go to **IAM → Roles → [Your Role Name] → Trust relationships**.
+2. Click **Edit trust policy**.
+3. Paste and modify the following JSON:
+   
+   {
+     "Version": "2012-10-17",
+     "Statement": [
+       {
+         "Effect": "Allow",
+         "Principal": {
+           "AWS": [
+             "arn:aws:iam::123456789012:user/Alice",
+             "arn:aws:iam::123456789012:user/Bob",
+             "arn:aws:iam::123456789012:user/Charlie"
+           ]
+         },
+         "Action": "sts:AssumeRole"
+       }
+     ]
+   }
+   ```
+   Replace the account ID (`123456789012`) and user names (`Alice`, `Bob`, `Charlie`) with your actual ones.
+4. Click **Update policy** to save your changes.
+---
+## 7. Verify Everything
+Double-check:
+* **Permissions** tab → shows `AdministratorAccess` policy attached.
+* **Trust relationships** tab → lists your allowed users correctly.
+---
+## 8. Test the Role
+Try switching to the new role from one of the allowed user accounts:
+1. In the AWS console, click your username (top-right).
+2. Choose **Switch role**.
+3. Enter your **Account ID** and **Role name**.
+4. If everything’s set up right, you’ll have full admin access under that role.
